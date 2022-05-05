@@ -1,5 +1,7 @@
 const N=5
 
+var scoreDisplay=document.getElementById("score");
+
 var predict,input;  //予測値,入力値
 var y=[0,0];  //予測値のバイナリー
 var data=new Array(2*N+1);  //累計データ
@@ -17,7 +19,6 @@ for(let i=0;i<2;i++){
         w[i][j]=0;
     }
 }
-
 input=0;
 // 1回目の分のパーセプトロン予測をおこなっておく
 predict=perceptron(input,data,w,y);
@@ -34,7 +35,6 @@ function perceptron(input, data, w, y){
     else{          //左の扉を選択
         x=[-1,+1];
     }
-
 //前回の予測が間違っていたら重みベクトルを更新する
     for(let i=0;i<2;i++){
         console.log(x[i],y[i])
@@ -44,8 +44,6 @@ function perceptron(input, data, w, y){
             }
         }
     }      
-
-    [1,0,0,0,0][0,0,0,0,1][0,0,0,1,0]
 // 前回のプレイヤーの選択を累計データに追加
     for(let i=0;i<2;i++){
         for(let j=2*N;j>1;j--){
@@ -54,7 +52,6 @@ function perceptron(input, data, w, y){
     }
     data[0]=x[0];
     data[1]=x[1];
-
 // 予測値を計算
     y=[0,0]
     for(let i=0;i<2;i++){
@@ -62,7 +59,6 @@ function perceptron(input, data, w, y){
             y[i] += w[i][j]*data[j];
         }
     }
-
 // 予測した結果が大きい方( 0:左, 1:右 )を返す
     if(y[0]>y[1]){
         return 0;
@@ -73,24 +69,28 @@ function perceptron(input, data, w, y){
 }
 
 
+
 function game(){
-    console.log("ボタン押された");
+    //console.log("ボタン押された");
     if(predict==input){
-        console.log("予測通り"); 
+        //console.log("予測通り"); 
         score--;
     }
     else {
-        console.log("予測が外れた");
+        //console.log("予測が外れた");
         score++;
     }
-    console.log(score,data)
+    //console.log(score,data)
+    scoreDisplay.innerHTML(score);
     if(score==-15){
-        console.log("ゲーム終了：負け");
-        location.reload();
+        //console.log("ゲーム終了：負け");
+        //location.reload();
+        scoreDisplay.innerHTML("ゲーム終了：負け")
     }
     else if(score==15){
-        console.log("ゲーム終了：勝ち");
-        location.reload();
+        //console.log("ゲーム終了：勝ち");
+        //location.reload();
+        scoreDisplay.innerHTML("ゲーム終了：勝ち")
     }
 
 // 次の分のパーセプトロン予測をおこなっておく
