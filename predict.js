@@ -81,16 +81,16 @@ function game(){
         score++;
     }
     //console.log(score,data)
-    scoreDisplay.innerHTML(score);
+    scoreDisplay.innerHTML=score;
     if(score==-15){
         //console.log("ゲーム終了：負け");
         //location.reload();
-        scoreDisplay.innerHTML("ゲーム終了：負け")
+        scoreDisplay.innerHTML="ゲーム終了：負け";
     }
     else if(score==15){
         //console.log("ゲーム終了：勝ち");
         //location.reload();
-        scoreDisplay.innerHTML("ゲーム終了：勝ち")
+        scoreDisplay.innerHTML="ゲーム終了：勝ち";
     }
 
 // 次の分のパーセプトロン予測をおこなっておく
