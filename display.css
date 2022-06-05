@@ -1,0 +1,12 @@
+ul {
+    display: flex;
+    list-style: none;
+}
+
+#doorLeft{
+    width: 50%;
+}
+
+#doorRight{
+    width: 50%;
+}

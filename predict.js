@@ -1,70 +1,62 @@
-const N=5
+const N=10
 
 var scoreDisplay=document.getElementById("score");
 
 var predict,input;  //予測値,入力値
-var y=[0,0];  //予測値のバイナリー
+var y=0;  //予測値のバイナリー
 var data=new Array(2*N+1);  //累計データ
-var w=new Array(2);  //重み
+var w=new Array(2*N+1);  //重み
 var score=0;  //ゲームのスコア初期状態10
 
 // 初期化
-data[0]=-1;
-for(let i=1;i<2*N+1;i++){
+for(let i=0;i<2*N+1;i++){
     data[i]=0;
+    w[i]=0;
 }
-for(let i=0;i<2;i++){
-    w[i]=new Array(2*N+1);
-    for(let j=0;j<2*N+1;j++){
-        w[i][j]=0;
-    }
-}
+data[0]=-1;
+
 input=0;
 // 1回目の分のパーセプトロン予測をおこなっておく
 predict=perceptron(input,data,w,y);
 
 
-
 //　パーセプトロンによって予測をおこなう
 function perceptron(input, data, w, y){
-    var x=new Array(2);  //前回の入力値をバイナリー表現するための配列
-    
-    if(input==0){  //右の扉を選択
-        x=[+1,-1];
-    }
-    else{          //左の扉を選択
-        x=[-1,+1];
-    }
+    var x = input; //左選択：-1, 右選択：+1
+
 //前回の予測が間違っていたら重みベクトルを更新する
-    for(let i=0;i<2;i++){
-        console.log(x[i],y[i])
-        if(x[i]!=y[i]){  //前回の入力値と予測値が異なった場合
-            for(let j=0;j<2*N+1;j++){
-                w[i][j] += x[i]*data[j];
-            }
-        }
-    }      
-// 前回のプレイヤーの選択を累計データに追加
-    for(let i=0;i<2;i++){
-        for(let j=2*N;j>1;j--){
-            data[j]=data[j-2];
-        }
-    }
-    data[0]=x[0];
-    data[1]=x[1];
-// 予測値を計算
-    y=[0,0]
-    for(let i=0;i<2;i++){
+    console.log(x,y)
+    if(x!=y){  //前回、入力値と予測値が異なった場合
         for(let j=0;j<2*N+1;j++){
-            y[i] += w[i][j]*data[j];
+            w[j] += x*data[j]; // x= -1 or +1  data= -1 or +1  だから x*data= -1 or +1 
+                               // w = 今回の入力と同じ過去データの数 - 入力と異なる過去データの数
         }
     }
-// 予測した結果が大きい方( 0:左, 1:右 )を返す
-    if(y[0]>y[1]){
-        return 0;
+    console.log(w);
+
+// 前回のプレイヤーの選択を累計データに追加
+    for(let j=2*N;j>0;j--){
+        data[j]=data[j-1];
+    }
+    data[0]=x;
+
+// 予測値を計算
+    y=0
+    for(let j=0;j<2*N+1;j++){
+        y += w[j]*data[j];
+    }
+    console.log(w);
+    console.log(data);
+    console.log(y);
+
+// 予測した結果が大きい方( -1:左, +1:右 )を返す
+    if(y<0){
+        console.log('左');
+        return -1;
     }
     else{
-        return 1;
+        console.log('右');
+        return +1;
     }
 }
 
@@ -92,7 +84,6 @@ function game(){
         //location.reload();
         scoreDisplay.innerHTML="ゲーム終了：勝ち";
     }
-
 // 次の分のパーセプトロン予測をおこなっておく
     predict=perceptron(input,data,w,y);
 
@@ -100,12 +91,12 @@ function game(){
 
 //左をクリックされた場合
 function clickLeft(){
-    input=0;  // ここで相手プレイヤーの手をインプット
+    input=-1;  // ここで相手プレイヤーの手をインプット
     game();  // ゲーム開始
 }
 //右をクリックされた場合
 function clickRight(){
-    input=1;  // ここで相手プレイヤーの手をインプット
+    input=+1;  // ここで相手プレイヤーの手をインプット
     game();  // ゲーム開始
 }
 

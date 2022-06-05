@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
     <head>
-
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="display.css">
+        <title>どっちの扉？</title>
     </head>
     <body>
-        <p>スコア：</p><div id="score">0</div>
-
-        <button id="buttonLeft" onclick="clickLeft()">左</button>
-        <button id="buttonRight" onclick="clickRight()">右</button>
+        <p>正解の扉を選択するとスコアが上がる！</p>
+        <p>15点で勝利！</p>
+        <p>スコア：<div id="score">0</div></p>
+        <ul>
+            <li><img id="doorLeft" src="leftDoor.png" onclick="clickLeft()"></li>
+            <li><img id="doorRight" src="rightDoor.png" onclick="clickRight()"></li>
+        </ul>
 
         <script src="predict.js"></script>
     </body>
